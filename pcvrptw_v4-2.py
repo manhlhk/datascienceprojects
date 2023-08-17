@@ -378,38 +378,6 @@ def print_solution(data, manager, routing, solution, filename):
     
     return results
 
-#%%
-import matplotlib.pyplot as plt
-def plot_solution(data, manager, routing, solution):
-    # Create a scatter plot of the coordinates
-    data = {}
-    data['num_vehicles'] = 40
-    data['coordinates'] = [list(map(float, str(point).replace("POINT (", "").replace(")", "").split())) for point in merged_df['geometry']]
-    data['coordinates'].insert(0, [ -1.899004, 52.477664])
-    # Extract x and y coordinates from the data
-    x_coords = [point[0] for point in data['coordinates']]
-    y_coords = [point[1] for point in data['coordinates']]
-    
-    plt.scatter(x_coords, y_coords, alpha=0.6, edgecolors="w", linewidth=0.5)
-
-    # Plot the routes
-    for vehicle_id in range(data['num_vehicles']):
-        index = routing.Start(vehicle_id)
-        index = solution.Value(routing.NextVar(index))
-        route = []
-        while not routing.IsEnd(index):
-            # Get the coordinates of the location
-            coordinates = data['coordinates'][manager.IndexToNode(index)]
-            route.append(coordinates)
-            index = solution.Value(routing.NextVar(index))
-
-        # Add the route to the plot
-        route.append(route[0])  # Return to the start
-        plt.plot([coordinates[0] for coordinates in route], [coordinates[1] for coordinates in route], 'o-')
-
-    # Show the plot
-    plt.show()
-
 #%%    
 import time, winsound
 start_time = time.time()
